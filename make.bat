@@ -1,0 +1,1 @@
+javac -d d:\shared\Java\classes *.java
