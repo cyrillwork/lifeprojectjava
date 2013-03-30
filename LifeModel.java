@@ -34,6 +34,7 @@ public class LifeModel extends java.util.Observable implements java.io.Serializa
         //setRandom();
     };
     
+    
     public LifeModel(int n, int m, int delay)
     {
         super();
@@ -217,4 +218,10 @@ public class LifeModel extends java.util.Observable implements java.io.Serializa
         arrayLife = new boolean[N][M];
         arrayLifeInit = new boolean[N][M];        
     }
+    
+    public void changeCell(int i, int j)
+    {
+        arrayLife[i][j] = !arrayLife[i][j];
+    }
+    
 }

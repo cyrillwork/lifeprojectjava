@@ -7,6 +7,7 @@ package lifeprojectjava;
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
+import java.awt.event.*;
 /**
  *
  * @author Admin
@@ -19,8 +20,64 @@ public class LifeGridView extends LifeView
 
     public LifeGridView(LifeModel model)
     {
-        super(model);
+        super(model);        
         updateDisplay();
+        
+        //java.awt.event.MouseListener
+        this.addMouseListener(new java.awt.event.MouseListener() 
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                System.out.println("mouseClicked");
+                
+                System.out.println("" + e.getPoint());
+                
+                int j = e.getPoint().y / SIZE;
+                int i = e.getPoint().x / SIZE;
+            
+                j = (e.getPoint().y - j)/ SIZE;
+                i = (e.getPoint().x - i)/ SIZE;
+                System.out.println("(i,j)=" + i+ " " + j);
+                
+                getModel().changeCell(i, j);
+                
+                repaint();
+
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e)
+            {
+                //System.out.println("mousePressed");
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e)
+            {
+        
+                
+                //System.out.println("mouseReleased");
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e)
+            {
+                //System.out.println("mouseEntered");
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e)
+            {
+                //System.out.println("mouseExited");
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+        } 
+      );  
     }
     
     public void paintComponent( Graphics g )
