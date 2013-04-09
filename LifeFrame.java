@@ -15,9 +15,10 @@ import java.io.*;
 public class LifeFrame extends JFrame implements Runnable
 {
     private LifeModel model;
+    LifeGridView view;
     private boolean isRun = false;
     protected JButton button1;
-    //private int Delay;
+    private JLabel label1;
     
     public LifeFrame(LifeModel m)
     {
@@ -33,7 +34,7 @@ public class LifeFrame extends JFrame implements Runnable
         //System.out.println("model = " +  model);
         //model.initLifeModel(N, M);
         
-        LifeGridView view = new LifeGridView(model);
+        view = new LifeGridView(model);
         
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -82,7 +83,7 @@ public class LifeFrame extends JFrame implements Runnable
                 public void actionPerformed( ActionEvent e )
                 {
                     model.backToInit();
-                    repaint();
+                    view.repaint();
                 }
             }
         );
@@ -96,7 +97,7 @@ public class LifeFrame extends JFrame implements Runnable
                     stop();
                     
                     model.backToInit();
-                    repaint();
+                    view.repaint();
                     
                     JFileChooser chooser = new JFileChooser();
                     //chooser.setFileFilter(new FileNameExtensionFilter("sss"));
@@ -128,6 +129,22 @@ public class LifeFrame extends JFrame implements Runnable
             }
         );
         panel.add(buttonSave);
+
+        JButton buttonClear = new JButton("Clear");
+        buttonClear.addActionListener( new ActionListener()
+            {
+                public void actionPerformed( ActionEvent e )
+                {
+                    stop();
+                    model.setClear();
+                    view.repaint();
+                }
+            }
+        );
+        panel.add(buttonClear);
+        
+        label1 = new JLabel("  step ");
+        panel.add(label1);
         
         getContentPane().add(BorderLayout.SOUTH, panel);
         
@@ -141,8 +158,6 @@ public class LifeFrame extends JFrame implements Runnable
                 isRun = false;
             }
         };
-        
-        
         this.addWindowListener(listener);
     }
     
@@ -168,26 +183,39 @@ public class LifeFrame extends JFrame implements Runnable
     public void setRandom()
     {
         model.setRandom();
-        repaint();
+        view.repaint();
     }
     
     public void run()
     {
+        
         while(isRun)
         {
-            System.out.println("Run loop");           
+            //System.out.println("Run loop");           
             try
             {
                 model.stepLife();
-                repaint();
-                
+                view.repaint();             
+                label1.setText("  step " + model.getSteps());
                 Thread.sleep(model.getDelay());
-                
+                if(model.getChange() == false)
+                {
+                    this.stop();
+                }
             }
             catch(InterruptedException ex)
             {
                 ex.printStackTrace();
             }
         }
+        
+        /*
+        if(model.getChange() == false)
+        {
+            JDialog d = new JDialog();
+            d.setSize(100, 100);
+            d.setVisible(true);
+        }
+        */ 
     }
 }

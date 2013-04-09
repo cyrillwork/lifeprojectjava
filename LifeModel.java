@@ -6,6 +6,7 @@ package lifeprojectjava;
 
 //import java.util.Observable;
 import java.util.Random;
+import java.util.Arrays;
 /**
  *
  * @author Admin
@@ -18,7 +19,8 @@ public class LifeModel extends java.util.Observable implements java.io.Serializa
     private boolean arrayLife[][];
     private boolean arrayLifeInit[][];
     private int countSteps;
-    
+    private boolean isChange;
+        
     public LifeModel()
     {
         super();
@@ -29,11 +31,11 @@ public class LifeModel extends java.util.Observable implements java.io.Serializa
         countSteps = 0;
         arrayLife = new boolean[N][M];
         arrayLifeInit = new boolean[N][M];
+        isChange = true;
         //arrayLife = new boolean[N][M];
         //System.out.println("1 array=" + arrayLife);
         //setRandom();
     };
-    
     
     public LifeModel(int n, int m, int delay)
     {
@@ -45,6 +47,7 @@ public class LifeModel extends java.util.Observable implements java.io.Serializa
         countSteps = 0;
         arrayLife = new boolean[N][M];
         arrayLifeInit = new boolean[N][M];
+        isChange = true;
         //arrayLife = new boolean[N][M];
         //System.out.println("1 array=" + arrayLife);
         //setRandom();
@@ -58,6 +61,8 @@ public class LifeModel extends java.util.Observable implements java.io.Serializa
     
     public void setRandom()
     {
+        countSteps = 0;
+        
         Random rand = new Random(); 
         for(int i = 0; i <N; i++)
         {
@@ -71,6 +76,7 @@ public class LifeModel extends java.util.Observable implements java.io.Serializa
     public void stepLife()
     {
         boolean [][]temp1 = new boolean[N][M];
+        
         for (int i = 0; i < N; i++)
         {
             for (int j = 0; j < M; j++)
@@ -174,19 +180,32 @@ public class LifeModel extends java.util.Observable implements java.io.Serializa
                             temp1[i][j] = true;
                         }
                     }
-
                 }
             }
             
-            System.out.println("current step " + this.countSteps);
+            //System.out.println("current step " + this.countSteps);
             
             if(this.countSteps == 0)
             {
                 this.arrayLifeInit = this.arrayLife.clone();
+                isChange = true;
+            }
+            else
+            {
+                if(equals(this.arrayLife, temp1))
+                {
+                    System.out.println("!!!!! stop game!!!!!!!!");
+                    isChange = false;
+                }
+                else
+                {
+                    System.out.println("!!!!! not equal!!!!!!!!");
+                }
             }
             
             this.countSteps = this.countSteps + 1;
-             
+                
+            
             arrayLife = temp1;
         }
 
@@ -224,4 +243,42 @@ public class LifeModel extends java.util.Observable implements java.io.Serializa
         arrayLife[i][j] = !arrayLife[i][j];
     }
     
+    public void setClear()
+    {
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < M; j++)
+            {
+                countSteps = 0;
+                arrayLife[i][j] = false;
+                arrayLifeInit[i][j] = false;        
+            }
+        }
+        countSteps = 0;
+    }
+    
+    public boolean getChange()
+    {
+        return isChange;
+    }
+    
+    public int getSteps()
+    {
+        return countSteps;
+    }
+    
+    public boolean equals(boolean[][] array1, boolean[][] array2)
+    {
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < M; j++)
+            {
+                if(array1[i][j] != array2[i][j])
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
