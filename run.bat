@@ -1,1 +1,0 @@
-java -classpath d:\shared\Java\classes lifeprojectjava.LifeProjectJava
